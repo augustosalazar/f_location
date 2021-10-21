@@ -6,15 +6,12 @@ import 'package:get/get.dart';
 import 'package:loggy/loggy.dart';
 
 class LocationController extends GetxController {
-  //final userLocation = UserLocation(latitude: 11.0041, longitude: -74.8070).obs;
   final userLocation = UserLocation(latitude: 0, longitude: 0).obs;
 
   var errorMsg = "".obs;
   var _liveUpdate = false.obs;
   StreamSubscription<UserLocation>? _positionStreamSubscription;
   LocatorService service = Get.find();
-  //LocationService service = Get.find();
-
   bool get liveUpdate => _liveUpdate.value;
 
   clearLocation() {
@@ -25,7 +22,6 @@ class LocationController extends GetxController {
     try {
       userLocation.value = await service.getLocation();
     } catch (e) {
-      //userLocation.value = null;
       Get.snackbar('Error.....', e.toString(),
           backgroundColor: Colors.red, colorText: Colors.white);
     }
@@ -38,35 +34,21 @@ class LocationController extends GetxController {
       logError("Controller got the error ${error.toString()}");
       return;
     });
-    // if (_positionStreamSubscription != null) {
-    //   logError('suscribeLocationUpdates not null');
-    //   return;
-    // }
 
     _positionStreamSubscription = service.stream.listen((event) {
-//      if (event != null) {
       logInfo("Controller event ${event.latitude}");
       userLocation.value = event;
-      // } else {
-      //   logError("Controller event is null");
-      // }
     });
   }
 
   unSuscribeLocationUpdates() async {
-    print('unSuscribeLocationUpdates');
+    logInfo('unSuscribeLocationUpdates');
     _liveUpdate.value = false;
-    if (service != null) {
-      service.stopStream();
-    } else {
-      print("unSuscribeLocationUpdates locatorService is null");
-    }
-
+    service.stopStream();
     if (_positionStreamSubscription != null) {
       _positionStreamSubscription?.cancel();
-      //_positionStreamSubscription = null;
     } else {
-      print("Controller _positionStreamSubscription is null");
+      logError("Controller _positionStreamSubscription is null");
     }
   }
 }
