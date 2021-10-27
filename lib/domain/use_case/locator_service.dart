@@ -1,18 +1,15 @@
 import 'package:f_location/data/model/user_location.dart';
 import 'package:geolocator/geolocator.dart';
 import 'dart:async';
+import 'package:loggy/loggy.dart';
 
 class LocatorService {
-  final _controller = StreamController<UserLocation>();
-
   StreamSubscription<Position>? _positionStreamSubscription;
 
-  StreamController<UserLocation> _locationController =
+  final StreamController<UserLocation> _locationController =
       StreamController<UserLocation>.broadcast();
 
   Geolocator geolocator = Geolocator();
-
-  //Stream<UserLocation> get stream => _controller.stream.asBroadcastStream();
   Stream<UserLocation> get stream => _locationController.stream;
 
   Future<UserLocation> getLocation() async {
@@ -27,10 +24,10 @@ class LocatorService {
   }
 
   Future<void> startStream() async {
-    print("startStream with Locator library");
+    logInfo("startStream with Locator library");
     _positionStreamSubscription =
         Geolocator.getPositionStream().handleError((onError) {
-      print("Got error from Geolocator stream");
+      logError("Got error from Geolocator stream");
       return Future.error(onError.toString());
     }).listen((event) {
       //_controller.sink.add(UserLocation.fromPosition(event));
@@ -42,7 +39,7 @@ class LocatorService {
     if (_positionStreamSubscription != null) {
       _positionStreamSubscription!.cancel();
     } else {
-      print("stopStream _positionStreamSubscription is null");
+      logError("stopStream _positionStreamSubscription is null");
     }
   }
 }
