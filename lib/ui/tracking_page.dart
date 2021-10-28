@@ -42,7 +42,7 @@ class _TrackingPageState extends State<TrackingPage> {
                       onPressed: () async {
                         locationController.getLocation();
                       },
-                      child: const Text("Current location")),
+                      child: const Text("Get markers")),
                   Obx(() => ElevatedButton(
                       key: const Key("changeLiveUpdate"),
                       onPressed: () {
@@ -62,6 +62,7 @@ class _TrackingPageState extends State<TrackingPage> {
                 child: GoogleMap(
                   onMapCreated: _onMapCreated,
                   mapType: MapType.normal,
+                  markers: Set<Marker>.of(locationController.markers.values),
                   myLocationEnabled: true,
                   initialCameraPosition: const CameraPosition(
                     target: LatLng(11.0227767, -74.81611),
@@ -98,6 +99,7 @@ class _TrackingPageState extends State<TrackingPage> {
                         controller.userLocation.value.longitude.toString(),
                     key: const Key("position"),
                   );
+                  setState(() {});
                 },
               ),
             ],
