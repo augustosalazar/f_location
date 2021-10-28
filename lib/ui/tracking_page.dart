@@ -1,7 +1,6 @@
 import 'package:f_location/domain/controller/location_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_map/plugin_api.dart';
-import 'package:latlong2/latlong.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:get/get.dart';
 import 'package:loggy/loggy.dart';
 
@@ -13,12 +12,10 @@ class TrackingPage extends StatefulWidget {
 }
 
 class _TrackingPageState extends State<TrackingPage> {
-  late final MapController _mapController;
+  late GoogleMapController googleMapController;
 
-  @override
-  void initState() {
-    super.initState();
-    _mapController = MapController();
+  void _onMapCreated(GoogleMapController controller) {
+    googleMapController = controller;
   }
 
   @override
@@ -60,52 +57,35 @@ class _TrackingPageState extends State<TrackingPage> {
                           : "Set live updates on"))),
                 ],
               ),
-              Obx(
-                () => Expanded(
-                  child: FlutterMap(
-                    mapController: _mapController,
-                    options: MapOptions(
-                      center: LatLng(
-                          locationController.userLocation.value.latitude,
-                          locationController.userLocation.value.longitude),
-                      interactiveFlags: InteractiveFlag.rotate |
-                          InteractiveFlag.pinchZoom |
-                          InteractiveFlag.doubleTapZoom,
-                      //   zoom: 13.0,
-                    ),
-                    layers: [
-                      TileLayerOptions(
-                        urlTemplate:
-                            "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                        subdomains: ['a', 'b', 'c'],
-                        attributionBuilder: (_) {
-                          return const Text("© OpenStreetMap contributors");
-                        },
-                      ),
-                      MarkerLayerOptions(
-                        markers: [
-                          Marker(
-                            width: 20.0,
-                            height: 20.0,
-                            point: LatLng(
-                                locationController.userLocation.value.latitude,
-                                locationController
-                                    .userLocation.value.longitude),
-                            builder: (ctx) => const FlutterLogo(),
-                          ),
-                        ],
-                      ),
-                    ],
+              //Obx(() =>
+              Expanded(
+                child: GoogleMap(
+                  onMapCreated: _onMapCreated,
+                  mapType: MapType.normal,
+                  myLocationEnabled: true,
+                  initialCameraPosition: const CameraPosition(
+                    target: LatLng(11.0227767, -74.81611),
+                    zoom: 17.0,
                   ),
+                  // markers: Set.from(
+                  //   [
+                  //     Marker(
+                  //       icon: BitmapDescriptor.defaultMarker,
+                  //       markerId: MarkerId('google_plex'),
+                  //       position: LatLng(11.022527, -74.816371),
+                  //     ),
+                  //   ],
+                  // ),
                 ),
               ),
+              // ),
+
               GetX<LocationController>(
                 builder: (controller) {
                   if (controller.userLocation.value.latitude != 0) {
-                    _mapController.move(
+                    googleMapController.moveCamera(CameraUpdate.newLatLng(
                         LatLng(controller.userLocation.value.latitude,
-                            controller.userLocation.value.longitude),
-                        14.0);
+                            controller.userLocation.value.longitude)));
                   }
                   logInfo("UI <" +
                       controller.userLocation.value.latitude.toString() +

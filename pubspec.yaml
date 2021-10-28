@@ -30,18 +30,13 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter
-  flutter_map: ^0.14.0
   geolocator: ^7.7.0
   get: ^4.3.8
+  google_maps_flutter: ^2.0.11
+  google_maps_flutter_web: ^0.3.2
   loggy: ^2.0.1
 
 dev_dependencies:
-  
-  # The "flutter_lints" package below contains a set of recommended lints to
-  # encourage good coding practices. The lint set provided by the package is
-  # activated in the `analysis_options.yaml` file located at the root of your
-  # package. See that file for information about deactivating specific lint
-  # rules and activating additional ones.
   flutter_lints: ^1.0.0
   flutter_test:
     sdk: flutter
