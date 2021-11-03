@@ -102,7 +102,6 @@ class _TrackingPageState extends State<TrackingPage> {
               GetX<LocationController>(
                 builder: (controller) {
                   if (locationController.markers.values.isNotEmpty) {
-                    if (controller.userLocation.value.latitude != 0) {}
                     googleMapController.animateCamera(
                         CameraUpdate.newLatLngBounds(
                             _bounds(Set<Marker>.of(
