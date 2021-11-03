@@ -17,6 +17,7 @@ class LocationController extends GetxController {
   StreamSubscription<UserLocation>? _positionStreamSubscription;
   LocatorService service = Get.find();
   bool get liveUpdate => _liveUpdate.value;
+  bool changeMarkers = false;
 
   clearLocation() {
     userLocation.value = UserLocation(latitude: 0, longitude: 0);
@@ -24,29 +25,33 @@ class LocationController extends GetxController {
 
   updatedMarker() {
     markers.clear();
-    Marker marker = const Marker(
-      infoWindow: InfoWindow(title: '0', snippet: '*'),
-      icon: BitmapDescriptor.defaultMarker,
-      markerId: MarkerId('0'),
-      position: LatLng(11.022639, -74.816078),
-    );
-    markers[const MarkerId('0')] = marker;
+    logInfo("Updading marker list");
+    if (changeMarkers) {
+      Marker marker = const Marker(
+        infoWindow: InfoWindow(title: '0', snippet: '*'),
+        icon: BitmapDescriptor.defaultMarker,
+        markerId: MarkerId('0'),
+        position: LatLng(10.926312658949284, -74.80101286794627),
+      );
+      markers[const MarkerId('0')] = marker;
 
-    Marker marker1 = const Marker(
-      infoWindow: InfoWindow(title: '1', snippet: '*'),
-      icon: BitmapDescriptor.defaultMarker,
-      markerId: MarkerId('1'),
-      position: LatLng(11.016685298938107, -74.81718268008335),
-    );
-    markers[const MarkerId('1')] = marker1;
+      Marker marker1 = const Marker(
+        infoWindow: InfoWindow(title: '1', snippet: '*'),
+        icon: BitmapDescriptor.defaultMarker,
+        markerId: MarkerId('1'),
+        position: LatLng(10.930633152447768, -74.81758873396359),
+      );
+      markers[const MarkerId('1')] = marker1;
 
-    Marker marker2 = const Marker(
-      infoWindow: InfoWindow(title: '2', snippet: '*'),
-      icon: BitmapDescriptor.defaultMarker,
-      markerId: MarkerId('2'),
-      position: LatLng(11.011477134070967, -74.79986042955926),
-    );
-    markers[const MarkerId('2')] = marker2;
+      Marker marker2 = const Marker(
+        infoWindow: InfoWindow(title: '2', snippet: '*'),
+        icon: BitmapDescriptor.defaultMarker,
+        markerId: MarkerId('2'),
+        position: LatLng(10.936442649033246, -74.79614263876492),
+      );
+      markers[const MarkerId('2')] = marker2;
+    }
+    changeMarkers = !changeMarkers;
   }
 
   getLocation() async {
