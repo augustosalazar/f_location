@@ -57,7 +57,7 @@ class LocationController extends GetxController {
   getLocation() async {
     try {
       userLocation.value = await service.getLocation();
-      updatedMarker();
+      //updatedMarker();
     } catch (e) {
       Get.snackbar('Error.....', e.toString(),
           backgroundColor: Colors.red, colorText: Colors.white);

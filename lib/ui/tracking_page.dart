@@ -15,12 +15,7 @@ class _TrackingPageState extends State<TrackingPage> {
   late GoogleMapController googleMapController;
 
   void _onMapCreated(GoogleMapController controller) {
-    LocationController locationController = Get.find();
     googleMapController = controller;
-    // if (locationController.markers.values.isNotEmpty) {
-    //   controller.animateCamera(CameraUpdate.newLatLngBounds(
-    //       _bounds(Set<Marker>.of(locationController.markers.values)), 50));
-    // }
   }
 
   LatLngBounds _bounds(Set<Marker> markers) {
@@ -64,11 +59,17 @@ class _TrackingPageState extends State<TrackingPage> {
                       },
                       child: const Text("Clear")),
                   ElevatedButton(
+                      key: const Key("getMarkers"),
+                      onPressed: () async {
+                        locationController.updatedMarker();
+                      },
+                      child: const Text("Markers")),
+                  ElevatedButton(
                       key: const Key("currentLocation"),
                       onPressed: () async {
                         locationController.getLocation();
                       },
-                      child: const Text("Get markers")),
+                      child: const Text("Current")),
                   Obx(() => ElevatedButton(
                       key: const Key("changeLiveUpdate"),
                       onPressed: () {
@@ -83,29 +84,21 @@ class _TrackingPageState extends State<TrackingPage> {
                           : "Set live updates on"))),
                 ],
               ),
-              Obx(
-                () => Expanded(
+              GetX<LocationController>(builder: (controller) {
+                logInfo('Recreating map');
+                return Expanded(
                   child: GoogleMap(
                     onMapCreated: _onMapCreated,
                     mapType: MapType.normal,
-                    markers: Set<Marker>.of(locationController.markers.values),
+                    markers: Set<Marker>.of(controller.markers.values),
                     myLocationEnabled: true,
                     initialCameraPosition: const CameraPosition(
                       target: LatLng(11.0227767, -74.81611),
                       zoom: 17.0,
                     ),
-                    // markers: Set.from(
-                    //   [
-                    //     Marker(
-                    //       icon: BitmapDescriptor.defaultMarker,
-                    //       markerId: MarkerId('google_plex'),
-                    //       position: LatLng(11.022527, -74.816371),
-                    //     ),
-                    //   ],
-                    // ),
                   ),
-                ),
-              ),
+                );
+              }),
               GetX<LocationController>(
                 builder: (controller) {
                   if (locationController.markers.values.isNotEmpty) {
