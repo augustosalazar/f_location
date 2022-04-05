@@ -6,11 +6,11 @@ import 'package:loggy/loggy.dart';
 class LocatorService {
   StreamSubscription<Position>? _positionStreamSubscription;
 
-  final StreamController<UserLocation> _locationController =
+  final StreamController<UserLocation> _locationStreamController =
       StreamController<UserLocation>.broadcast();
 
   Geolocator geolocator = Geolocator();
-  Stream<UserLocation> get stream => _locationController.stream;
+  Stream<UserLocation> get locationStream => _locationStreamController.stream;
 
   Future<UserLocation> getLocation() async {
     UserLocation userLocation;
@@ -31,7 +31,7 @@ class LocatorService {
       return Future.error(onError.toString());
     }).listen((event) {
       //_controller.sink.add(UserLocation.fromPosition(event));
-      _locationController.add(UserLocation.fromPosition(event));
+      _locationStreamController.add(UserLocation.fromPosition(event));
     });
   }
 
