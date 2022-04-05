@@ -25,7 +25,7 @@ class LocationController extends GetxController {
 
   updatedMarker() {
     markers.clear();
-    logInfo("Updading marker list");
+    logInfo("Updating marker list");
     if (changeMarkers) {
       Marker marker = const Marker(
         infoWindow: InfoWindow(title: '0', snippet: '*'),
@@ -63,9 +63,9 @@ class LocationController extends GetxController {
     }
   }
 
-  suscribeLocationUpdates() async {
+  subscribeLocationUpdates() async {
     _liveUpdate.value = true;
-    logInfo('suscribeLocationUpdates');
+    logInfo('subscribeLocationUpdates');
     await service.startStream().onError((error, stackTrace) {
       logError("Controller got the error ${error.toString()}");
       return;
@@ -77,8 +77,8 @@ class LocationController extends GetxController {
     });
   }
 
-  unSuscribeLocationUpdates() async {
-    logInfo('unSuscribeLocationUpdates');
+  unSubscribeLocationUpdates() async {
+    logInfo('unSubscribeLocationUpdates');
     _liveUpdate.value = false;
     service.stopStream();
     if (_positionStreamSubscription != null) {

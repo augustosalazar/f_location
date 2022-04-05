@@ -74,9 +74,9 @@ class _TrackingPageState extends State<TrackingPage> {
                       key: const Key("changeLiveUpdate"),
                       onPressed: () {
                         if (!locationController.liveUpdate) {
-                          locationController.suscribeLocationUpdates();
+                          locationController.subscribeLocationUpdates();
                         } else {
-                          locationController.unSuscribeLocationUpdates();
+                          locationController.unSubscribeLocationUpdates();
                         }
                       },
                       child: Text(locationController.liveUpdate
