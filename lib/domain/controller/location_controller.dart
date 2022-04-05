@@ -1,12 +1,10 @@
 import 'dart:async';
-import 'dart:math';
 import 'package:f_location/data/model/user_location.dart';
 import 'package:f_location/domain/use_case/locator_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:loggy/loggy.dart';
-//import 'package:latlong2/latlong.dart';
 
 class LocationController extends GetxController {
   var userLocation = UserLocation(latitude: 0, longitude: 0).obs;
