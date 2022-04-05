@@ -69,7 +69,7 @@ class LocationController extends GetxController {
       return;
     });
 
-    _positionStreamSubscription = service.stream.listen((event) {
+    _positionStreamSubscription = service.locationStream.listen((event) {
       logInfo("Controller event ${event.latitude}");
       userLocation.value = event;
     });
