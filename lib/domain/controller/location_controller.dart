@@ -9,7 +9,7 @@ import 'package:loggy/loggy.dart';
 //import 'package:latlong2/latlong.dart';
 
 class LocationController extends GetxController {
-  final userLocation = UserLocation(latitude: 0, longitude: 0).obs;
+  var userLocation = UserLocation(latitude: 0, longitude: 0).obs;
   var errorMsg = "".obs;
   var _liveUpdate = false.obs;
   //var markers = <Marker>[].obs;
