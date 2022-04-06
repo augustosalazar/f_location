@@ -70,20 +70,20 @@ class _TrackingPageState extends State<TrackingPage> {
                         locationController.getLocation();
                       },
                       child: const Text("Current")),
-                  Obx(() => ElevatedButton(
-                      key: const Key("changeLiveUpdate"),
-                      onPressed: () {
-                        if (!locationController.liveUpdate) {
-                          locationController.subscribeLocationUpdates();
-                        } else {
-                          locationController.unSubscribeLocationUpdates();
-                        }
-                      },
-                      child: Text(locationController.liveUpdate
-                          ? "Set live updates off"
-                          : "Set live updates on"))),
                 ],
               ),
+              Obx(() => ElevatedButton(
+                  key: const Key("changeLiveUpdate"),
+                  onPressed: () {
+                    if (!locationController.liveUpdate) {
+                      locationController.subscribeLocationUpdates();
+                    } else {
+                      locationController.unSubscribeLocationUpdates();
+                    }
+                  },
+                  child: Text(locationController.liveUpdate
+                      ? "Set live updates off"
+                      : "Set live updates on"))),
               GetX<LocationController>(builder: (controller) {
                 logInfo('Recreating map');
                 return Expanded(
