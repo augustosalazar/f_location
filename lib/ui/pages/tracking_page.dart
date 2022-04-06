@@ -1,8 +1,8 @@
-import 'package:f_location/domain/controller/location_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:get/get.dart';
 import 'package:loggy/loggy.dart';
+import '../controllers/location_controller.dart';
 
 class TrackingPage extends StatefulWidget {
   const TrackingPage({Key? key}) : super(key: key);

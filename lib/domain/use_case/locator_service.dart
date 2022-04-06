@@ -15,7 +15,8 @@ class LocatorService {
   Future<UserLocation> getLocation() async {
     UserLocation userLocation;
     try {
-      Position l = await Geolocator.getCurrentPosition();
+      Position l = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
       userLocation = UserLocation(latitude: l.latitude, longitude: l.longitude);
       return Future.value(userLocation);
     } catch (e) {
@@ -25,13 +26,21 @@ class LocatorService {
 
   Future<void> startStream() async {
     logInfo("startStream with Locator library");
+
+    LocationSettings locationSettings = const LocationSettings(
+      accuracy: LocationAccuracy.high,
+      distanceFilter: 100,
+    );
+
     _positionStreamSubscription =
-        Geolocator.getPositionStream().handleError((onError) {
+        Geolocator.getPositionStream(locationSettings: locationSettings)
+            .handleError((onError) {
       logError("Got error from Geolocator stream");
       return Future.error(onError.toString());
-    }).listen((event) {
-      //_controller.sink.add(UserLocation.fromPosition(event));
-      _locationStreamController.add(UserLocation.fromPosition(event));
+    }).listen((Position? position) {
+      if (position != null) {
+        _locationStreamController.add(UserLocation.fromPosition(position));
+      }
     });
   }
 
