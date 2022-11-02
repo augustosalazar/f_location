@@ -31,7 +31,7 @@ dependencies:
   flutter:
     sdk: flutter
   geolocator: ^8.2.0
-  get: ^4.6.1
+  get: ^4.6.5
   google_maps_flutter: ^2.1.3
   google_maps_flutter_web: ^0.3.2
   loggy: ^2.0.1
