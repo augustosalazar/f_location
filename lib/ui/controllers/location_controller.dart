@@ -9,7 +9,7 @@ import 'package:loggy/loggy.dart';
 class LocationController extends GetxController {
   var userLocation = UserLocation(latitude: 0, longitude: 0).obs;
   var errorMsg = "".obs;
-  var _liveUpdate = false.obs;
+  final _liveUpdate = false.obs;
   //var markers = <Marker>[].obs;
   var markers = <MarkerId, Marker>{}.obs;
   StreamSubscription<UserLocation>? _positionStreamSubscription;
