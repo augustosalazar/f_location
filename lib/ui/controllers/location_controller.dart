@@ -1,16 +1,13 @@
 import 'dart:async';
 import 'package:f_location/data/model/user_location.dart';
 import 'package:f_location/domain/use_case/locator_service.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:loggy/loggy.dart';
 
 class LocationController extends GetxController {
   var userLocation = UserLocation(latitude: 0, longitude: 0).obs;
-  var errorMsg = "".obs;
   final _liveUpdate = false.obs;
-  //var markers = <Marker>[].obs;
   var markers = <MarkerId, Marker>{}.obs;
   StreamSubscription<UserLocation>? _positionStreamSubscription;
   LocatorService service = Get.find();
@@ -52,33 +49,43 @@ class LocationController extends GetxController {
     changeMarkers = !changeMarkers;
   }
 
-  getLocation() async {
-    try {
-      userLocation.value = await service.getLocation();
-    } catch (e) {
-      Get.snackbar('Error.....', e.toString(),
-          backgroundColor: Colors.red, colorText: Colors.white);
-    }
+  Future<void> getLocation() async {
+    userLocation.value =
+        await service.getLocation().onError((error, stackTrace) {
+      return Future.error(error.toString());
+    });
   }
 
-  subscribeLocationUpdates() async {
-    _liveUpdate.value = true;
+  Future<void> subscribeLocationUpdates() async {
     logInfo('subscribeLocationUpdates');
+
     await service.startStream().onError((error, stackTrace) {
-      logError("Controller got the error ${error.toString()}");
-      return;
+      logError(
+          "Controller subscribeLocationUpdates got the error ${error.toString()}");
+      return Future.error(error.toString());
     });
 
     _positionStreamSubscription = service.locationStream.listen((event) {
       logInfo("Controller event ${event.latitude}");
       userLocation.value = event;
     });
+    _liveUpdate.value = true;
   }
 
-  unSubscribeLocationUpdates() async {
+  Future<void> unSubscribeLocationUpdates() async {
     logInfo('unSubscribeLocationUpdates');
+    if (liveUpdate == false) {
+      logInfo('unSubscribeLocationUpdates liveUpdate is false');
+      return Future.value();
+    }
+    await service.stopStream().onError((error, stackTrace) {
+      logError(
+          "Controller unSubscribeLocationUpdates got the error ${error.toString()}");
+      return Future.error(error.toString());
+    });
+
     _liveUpdate.value = false;
-    service.stopStream();
+
     if (_positionStreamSubscription != null) {
       _positionStreamSubscription?.cancel();
     } else {

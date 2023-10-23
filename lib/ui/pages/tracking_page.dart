@@ -67,18 +67,38 @@ class _TrackingPageState extends State<TrackingPage> {
                   ElevatedButton(
                       key: const Key("currentLocation"),
                       onPressed: () async {
-                        locationController.getLocation();
+                        try {
+                          locationController.getLocation();
+                        } catch (e) {
+                          Get.snackbar('Error.....', e.toString(),
+                              backgroundColor: Colors.red,
+                              colorText: Colors.white);
+                        }
                       },
                       child: const Text("Current")),
                 ],
               ),
               Obx(() => ElevatedButton(
                   key: const Key("changeLiveUpdate"),
-                  onPressed: () {
+                  onPressed: () async {
                     if (!locationController.liveUpdate) {
-                      locationController.subscribeLocationUpdates();
+                      await locationController
+                          .subscribeLocationUpdates()
+                          .onError((error, stackTrace) {
+                        Get.snackbar('Error.....', error.toString(),
+                            backgroundColor: Colors.red,
+                            snackPosition: SnackPosition.BOTTOM,
+                            colorText: Colors.white);
+                      });
                     } else {
-                      locationController.unSubscribeLocationUpdates();
+                      await locationController
+                          .unSubscribeLocationUpdates()
+                          .onError((error, stackTrace) {
+                        Get.snackbar('Error.....', error.toString(),
+                            backgroundColor: Colors.red,
+                            snackPosition: SnackPosition.BOTTOM,
+                            colorText: Colors.white);
+                      });
                     }
                   },
                   child: Text(locationController.liveUpdate

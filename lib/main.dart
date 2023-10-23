@@ -6,6 +6,7 @@ import 'domain/use_case/locator_service.dart';
 import 'ui/my_app.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   Loggy.initLoggy(
     logPrinter: const PrettyPrinter(
       showColors: true,

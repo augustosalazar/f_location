@@ -63,7 +63,11 @@ class LocatorService {
   Future<void> startStream() async {
     logInfo("startStream with Locator library");
 
-    await getPermission();
+    await getPermission().onError((error, stackTrace) {
+      logError("Controller startStream got the error ${error.toString()}");
+      return Future.error(error.toString());
+    });
+
     LocationSettings locationSettings = const LocationSettings(
       accuracy: LocationAccuracy.high,
       distanceFilter: 100,
@@ -81,11 +85,13 @@ class LocatorService {
     });
   }
 
-  stopStream() {
+  Future<void> stopStream() {
     if (_positionStreamSubscription != null) {
       _positionStreamSubscription!.cancel();
     } else {
       logError("stopStream _positionStreamSubscription is null");
+      return Future.error("stopStream _positionStreamSubscription is null");
     }
+    return Future.value();
   }
 }
