@@ -382,5 +382,9 @@ packages:
     source: hosted
     version: "2.1.4"
 sdks:
+<<<<<<< HEAD
   dart: ">=3.0.0 <4.0.0"
+=======
+  dart: ">=3.0.6 <4.0.0"
+>>>>>>> 25d78771c634d64e88909dffbd68530323560468
   flutter: ">=3.10.0"
