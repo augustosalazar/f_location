@@ -10,4 +10,9 @@ class UserLocation {
     return UserLocation(
         latitude: position.latitude, longitude: position.longitude);
   }
+
+  @override
+  String toString() {
+    return '$latitude - $longitude';
+  }
 }
