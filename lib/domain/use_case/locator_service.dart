@@ -70,7 +70,7 @@ class LocatorService {
 
     LocationSettings locationSettings = const LocationSettings(
       accuracy: LocationAccuracy.high,
-      distanceFilter: 100,
+      distanceFilter: 10,
     );
 
     _positionStreamSubscription =
